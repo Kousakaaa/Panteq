@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perhitungan Diskon</title>
+    <link rel="stylesheet" href="public/style.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: url('Blue.jpg') no-repeat center center fixed; background-size: cover; }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2, .result, .error { text-align: center; font-size: 18px; }
+        input, button { width: 100%; padding: 10px; font-size: 16px; border-radius: 4px; margin-bottom: 10px; }
+        input { border: 1px solid #ccc; }
+        button { background: #205ed1; color: white; border: none; cursor: pointer; }
+        button:hover { background: #53ecef; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Diskon Archive</h2>
+        <input type="text" id="harga" placeholder="Harga Asli" oninput="formatHarga()">
+        <input type="number" id="diskon" placeholder="Diskon (%)">
+        <button onclick="hitungDiskon()">Hitung Diskon</button>
+        <div id="errorMessage" class="error"></div>
+        <div id="hasil" class="result"></div>
+    </div>
+
+    <script>
+        function formatHarga() {
+            let harga = document.getElementById('harga').value.replace(/\D/g, '');
+            document.getElementById('harga').value = harga ? parseInt(harga).toLocaleString('id-ID') : '';
+        }
+
+        function hitungDiskon() {
+            const harga = parseFloat(document.getElementById('harga').value.replace(/\D/g, ''));
+            const diskon = parseFloat(document.getElementById('diskon').value);
+            if (isNaN(harga) || harga <= 0) return alert("Harga harus lebih dari 0.");
+            if (isNaN(diskon) || diskon < 0 || diskon > 100) {
+                document.getElementById('errorMessage').innerText = diskon > 100 ? "Diskon tidak bisa lebih dari 100%" : "Diskon harus antara 0-100%";
+                return document.getElementById('hasil').innerHTML = '';
+            }
+            const nilaiDiskon = harga * diskon / 100;
+            const hargaDiskon = harga - nilaiDiskon;
+            const formatRupiah = angka => angka.toLocaleString('id-ID');
+            document.getElementById('errorMessage').innerText = '';
+            document.getElementById('hasil').innerHTML = `Diskon: ${diskon}% (Rp ${formatRupiah(nilaiDiskon)})<br>Harga Asli: Rp ${formatRupiah(harga)}<br>Harga Setelah Diskon: Rp ${formatRupiah(hargaDiskon)}`;
+        }
+    </script>
+</body>
+</html>
